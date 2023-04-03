@@ -1,0 +1,48 @@
+version: '3.5'
+services:
+  database:
+    container_name: postgres
+    image: postgres:15.2
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppassword
+    ports:
+      - "5432:5432"
+
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ../
+      dockerfile: docker/php-fpm/Dockerfile
+      target: development
+    depends_on:
+      - database
+    volumes:
+      - ../app:/var/www
+    ports:
+      - "9000:9000"
+
+  apache:
+    container_name: apache
+    build:
+      context: ../
+      dockerfile: docker/apache/Dockerfile
+      target: development
+    volumes:
+      - ../app:/var/www
+    depends_on:
+      - php-fpm
+    links:
+      - php-fpm:php-fpm
+    ports:
+      - "80:80"
+      - "443:443"
+
+  redis:
+    container_name: redis
+    image: redis:6.2.11-alpine
+    ports:
+      - "6379:6379"
+
+
