@@ -1,8 +1,12 @@
 # Symfony 6, development and deploy stack
 
-*Keywords: Symfony 6.2, PHP8.2, Apache 2.4, Postgres 15.2, Docker, Redis*
+*Keywords: Symfony 6.2, PHP8.2, Apache 2.4, Postgres 15.2, Docker, Redis, PHPStan (with Doctrine support), PHPUnit, ECS*
 
-All commands are run in the root directory.
+### Init application on localhost
+```sh
+$ cd docker
+$ docker compose up
+```
 
 ### Config files
 | Path | Usage |
@@ -12,13 +16,14 @@ All commands are run in the root directory.
 |./app/.env.test| app env variables for test development|
 
 ```
-Or run composer commands / symfony commands in webroot directory in PHP container:
+Run composer commands / symfony commands in webroot directory in PHP container:
 ```sh
 $ composer ci       <-- all
 $ composer tests    <-- tests
 $ composer ecs      <-- code style check
 $ composer ecs-fix  <-- code style check + fix
 $ composer phpstan  <-- phpstan (level 7)
+$ bin/console       <-- classic Symfony console
 ```
 
 ## Push docker images to GitHub registry
